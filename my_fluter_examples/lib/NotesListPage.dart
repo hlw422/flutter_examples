@@ -193,6 +193,7 @@ class _NotesListPageState extends State<NotesListPage> {
           ),
           const Divider(),
           // 速记列表展示
+          // 速记列表展示
           Expanded(
             child:
                 _notes.isEmpty
@@ -201,10 +202,33 @@ class _NotesListPageState extends State<NotesListPage> {
                       itemCount: _notes.length,
                       itemBuilder: (context, index) {
                         Note note = _notes[index];
-                        return ListTile(
-                          title: Text(note.content),
-                          subtitle: Text(
-                            "时间：${note.time}\n标签：${note.tags.join(', ')}",
+                        return Dismissible(
+                          key: Key(note.id.toString()),
+                          direction: DismissDirection.endToStart, // 限制为从右向左滑动
+                          background: Container(
+                            color: Colors.red,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onDismissed: (direction) async {
+                            // 执行删除操作：从数据库删除并更新本地列表
+                            await NotesDatabase.instance.deleteNote(note.id!);
+                            setState(() {
+                              _notes.removeAt(index);
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("删除成功")),
+                            );
+                          },
+                          child: ListTile(
+                            title: Text(note.content),
+                            subtitle: Text(
+                              "时间：${note.time}\n标签：${note.tags.join(', ')}",
+                            ),
                           ),
                         );
                       },
