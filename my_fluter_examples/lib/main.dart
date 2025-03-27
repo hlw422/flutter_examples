@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_fluter_examples/NotesListPage.dart';
 import 'package:my_fluter_examples/RegistrationPage.dart';
 import 'package:my_fluter_examples/ShortHandPage.dart';
+import 'package:my_fluter_examples/BaseLayoutPage.dart';
 
 void main() {
   runApp(const LoginApp());
@@ -19,7 +20,7 @@ class LoginApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
-      home: const ShortHandPage(),
+      home: const LoginPage(),
     );
   }
 }
@@ -191,6 +192,26 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('跳转基础页面'),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BaseLayoutPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('跳转'),
+                    ),
+                  ],
+                ),
+
+
               ],
             ),
           ),
